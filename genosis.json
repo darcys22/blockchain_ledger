@@ -1,0 +1,16 @@
+{
+  "Information": {
+    "Name": "Darcy Financial",
+    "ABN": "Whatever"
+  },
+  "Protocols": [{
+    "Spend_Money": "//blah.com"
+  }, {
+    "Payrun": "//morebah.com"
+  }],
+  "Authorised": [{
+    "Sean": "Xhife7i43"
+  }, {
+    "admin": "0oXjefHFE37hfB"
+  }]
+}
