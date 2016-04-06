@@ -1,0 +1,23 @@
+{
+  "Prot": "Payrun",
+  "Tkn": "432423423.43432432.23423423",
+  "Txn": [{
+    "Account.Liabilities.Current_Payables.Employees.Sean": {
+      "Earnings" : {
+        "Regular" : {
+          "Hours" : "38",
+          "Rate" : "25"
+        },
+        "OT1.5" : {
+          "Hours" : "5"
+        }
+      },
+      "Deductions" : {
+        "Union" : "10"
+      }
+    }
+  }, {
+    "Account.Expenses.Employee_Expenses": {
+    }
+  }]
+}
