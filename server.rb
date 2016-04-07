@@ -5,6 +5,9 @@ require 'json'
 require 'pry'
 require 'date'
 
+#TODO Make this auto according to the needed protocol later
+require './protocols/ledger'
+
 
 
 #post '/transaction' do
@@ -24,8 +27,9 @@ def main()
   token_info = parse_token(transaction[:Tkn])
 
   if (precheck(transaction, token_info, company)) then
-    execute_transaction(protocol(transaction[:Prot]), transaction[:txn], token_info)
+    execute_transaction(transaction, company)
   end
+
 
   binding.pry
 end
@@ -41,15 +45,25 @@ def check_signature(signature, transaction)
   return 0
 end
 
-# The protocol will actually be the thing executing the transaction in the end it is the program that we want to be editing our file
-def protocol(prot)
-  return 0
-end
 
 #if all is good, go ahead and process the transaction into the books
-def execute_transaction(a,b,c)
+def execute_transaction(transaction, company)
   puts "Processing..."
+  check_balances(transaction)
+  check_date(transaction, company)
+  execute(company,transaction)
+  company[:Transactions] << transaction
   puts "Done."
+end
+
+#Make sure that all the amounts in the transaction balance to zero
+def check_balances(transaction)
+  print "Balances"
+end
+
+#Make sure that the transaction date is not before cutoff/balance date
+def check_date(transaction, company)
+  print "date acceptable"
 end
 
 # Will Check that the person posting the transaction has permission to do these things

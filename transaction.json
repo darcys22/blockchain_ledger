@@ -2,14 +2,14 @@
   "Prot": "Ledger",
   "Tkn": "432423423.43432432.23423423",
   "Txn": {
-    "Payee" : "Someone,
+    "Payee" : "Someone",
     "Date"  : "2015-11-22",
     "LineItems" : [{
       "Account" : "Asset.Cash",
-      "Amt" : "1000",
+      "Amt" : "1000"
     }, {
       "Account" : "Income.Fees",
-      "Amt" : "-1000",
+      "Amt" : "-1000"
     }]
   }
 }
