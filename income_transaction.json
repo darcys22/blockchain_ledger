@@ -1,0 +1,14 @@
+{
+  "Prot": "Income_from_previous_txn",
+  "Tkn": "432423423.43432432.23423423",
+  "Txn": [{
+    "Account.Asset.Cash": {
+      "Amt" : "1000",
+      "Cur" : "AUD",
+      "TXID": "2F4Gid4N"
+    }
+  }, {
+    "Account.Income.Fees": {
+    }
+  }]
+}

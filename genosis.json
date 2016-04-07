@@ -4,13 +4,29 @@
     "ABN": "Whatever"
   },
   "Protocols": [{
-    "Spend_Money": "//blah.com"
+    "Name" : "Spend_Money",
+    "Address" : "//blah.com",
+    "Privilege" : ["Admin", "Bookkeeper"]
   }, {
-    "Payrun": "//morebah.com"
+    "Name" : "Ledger",
+    "Address" : "//blah.com",
+    "Privilege" : ["Admin"]
+  }, {
+    "Name": "Income_from_previous_txn",
+    "Address" : "//blah.com",
+    "Privilege" : ["Admin", "Bookkeeper"]
+  }, {
+    "Name": "Payrun",
+    "Address" : "//morebah.com",
+    "Privilege" : ["Admin"]
   }],
   "Authorised": [{
-    "Sean": "Xhife7i43"
+    "Name" : "Sean",
+    "Role" : "Admin",
+    "Public_Key" : "Xhife7i43"
   }, {
-    "admin": "0oXjefHFE37hfB"
+    "Name" : "Office",
+    "Role" : "Bookkeeper",
+    "Public_Key" : "HjefHFE37"
   }]
 }

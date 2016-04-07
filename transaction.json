@@ -1,14 +1,15 @@
 {
-  "Prot": "Something",
+  "Prot": "Ledger",
   "Tkn": "432423423.43432432.23423423",
-  "Txn": [{
-    "Account.Asset.Cash": {
+  "Txn": {
+    "Payee" : "Someone,
+    "Date"  : "2015-11-22",
+    "LineItems" : [{
+      "Account" : "Asset.Cash",
       "Amt" : "1000",
-      "Cur" : "AUD",
-      "TXID": "2F4Gid4N"
-    }
-  }, {
-    "Account.Income.Fees": {
-    }
-  }]
+    }, {
+      "Account" : "Income.Fees",
+      "Amt" : "-1000",
+    }]
+  }
 }
