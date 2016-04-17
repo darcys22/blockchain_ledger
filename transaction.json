@@ -1,15 +1,1 @@
-{
-  "Prot": "Ledger",
-  "Tkn": "432423423.43432432.23423423",
-  "Txn": {
-    "Payee" : "Someone",
-    "Date"  : "2015-11-22",
-    "LineItems" : [{
-      "Account" : "Asset.Cash",
-      "Amt" : "1000"
-    }, {
-      "Account" : "Income.Fees",
-      "Amt" : "-1000"
-    }]
-  }
-}
+{"Prot":"Ledger","Txn":{"Payee":"Someone","Date":"2015-11-22","Narration":{"Flag":"","Tags":[],"Links":[]},"Postings":[{"Account":"Asset.Cash","Amt":{"Value":"1000","Cur":"AUD"}},{"Account":"Income.Fees","Amt":{"Value":"-1000","Cur":"AUD"}}]},"Tkn":"eyJ0eXAiOiJKV1QiLCJhbGciOiJub25lIn0.eyJTaWduYXR1cmUiOiJldTJxSFBZVktTNnlSamZTb0F3NVZaRGpFdjdaNVZRRWJRazlkMk1hMGdhRW1CQ1ovcXZoWU14UnZBdHNcbks4Q0JqQ0VlTklhZE1UQzFOMTNDU2ZvKzhYTEpDYXFLOGJoV0RCWE5oL3M4OGlraWR6REVlTHhuVFc3RlxuY3RpT2RUU29YVzlYdFl2eXljV1V4emZPeEJhRURXL0dwTGJUWEhoazR0SzhZNzZxVExJZDJnWFVLRkd5XG56ckxUTE4xd0NCTHA2clRmOWh5N0tZWGUvTTduTjlDWmM4bjRMN3A4SDNDZGJuNkVDQ3FrWllPa2hNTzNcblVPQ2d3M3lwOW1xWVZzcVFwaS9pQmc1ank1dVJ1T3lmZ25IQml2dDNFUFRwaW5XOXlwbThQdXlYZitwMlxucDJDL1MvVkUzdFJnajhGUVNzaDBKNTArdEhGazBYY2tGcUdLMnIvaFpRPT1cbiIsIkRhdGUiOiIyMDE2LTA0LTE3In0."}

@@ -4,6 +4,9 @@
 require 'json'
 require 'pry'
 require 'date'
+require 'openssl'
+require 'base64'
+require 'jwt'
 
 #TODO Make this auto according to the needed protocol later
 require './protocols/ledger'
@@ -24,7 +27,7 @@ def main()
   txn_file = File.read('transaction.json')
   transaction = JSON.parse(txn_file, :symbolize_names => true)
 
-  token_info = parse_token(transaction[:Tkn])
+  token_info = parse_token!(transaction)
 
   if (precheck(transaction, token_info, company)) then
     execute_transaction(transaction, company)
@@ -36,14 +39,10 @@ end
 
 # Checking the authorisationa nd the protocols are allowed
 def precheck(transaction, token, company)
-  check_signature(token[:Signature], transaction[:Txn])
   authN = get_protocol_auth_level(transaction[:Prot], company)
-  return check_authorisation(token[:Public_Key], company, authN)
+  return check_authorisation(token[0]["Signature"], transaction, company, authN)
 end
 
-def check_signature(signature, transaction)
-  return 0
-end
 
 
 #if all is good, go ahead and process the transaction into the books
@@ -58,18 +57,28 @@ end
 
 #Make sure that all the amounts in the transaction balance to zero
 def check_balances(transaction)
-  print "Balances"
+  unless ( transaction[:Txn][:Postings].reduce(0) { |sum,x| sum +x[:Amt][:Value].to_i } == 0 )
+    raise "Unbalanced Transaction"
+  end
 end
 
 #Make sure that the transaction date is not before cutoff/balance date
 def check_date(transaction, company)
-  print "date acceptable"
+  if [Date.parse(company[:Information][:Cutoff]), Date.parse(company[:Information][:Balance])].any? do |x| 
+    x > Date.parse(transaction[:Txn][:Date]) 
+  end
+    raise "Pre Cutoff Date"
+  end
 end
 
 # Will Check that the person posting the transaction has permission to do these things
-def check_authorisation(requester, company, required_privilege)
+def check_authorisation(signature, transaction, company, required_privilege)
+  digest = OpenSSL::Digest::SHA256.new
   begin 
-    authN = required_privilege.include?(company[:Authorised].find {|authN| authN[:Public_Key] == requester}[:Role])
+    authN = required_privilege.include?(company[:Authorised].find do |authN| 
+      key = OpenSSL::PKey::RSA.new Base64.decode64 authN[:Public_Key] 
+      key.verify digest, Base64.decode64(signature), transaction.tap{ |h| h.delete(:Tkn) }.to_json
+    end[:Role])
   rescue 
     raise "Requester Not Authorised"
   end
@@ -88,12 +97,8 @@ end
 
 
 #Will Return the information from inside the token
-def parse_token(toke)
-  return {
-    :Public_Key => "Xhife7i43",
-    :Signature => "abc",
-    :Date => Date.parse('2001-02-03')
-  }
+def parse_token!(transaction)
+  return JWT.decode transaction[:Tkn], nil, false
 end
 
 main()
