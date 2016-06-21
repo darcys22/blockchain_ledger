@@ -1,5 +1,5 @@
-module Ledger
+module SpendMoney
   def self.execute(company, transaction)
-    puts "Protocol: ledger"
+    print "spendmoney"
   end
 end
