@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'sinatra'
 require 'json'
 require 'pry'
 require 'date'
@@ -9,27 +8,27 @@ require 'base64'
 require 'jwt'
 
 module Btxledger
-  class Base
+  class Ledger
 
-    def self.load_protocols(company)
+    def initialize(company)
       for protocol in company[:Protocols]
         require './protocols/' + protocol[:Name].downcase()
       end
     end
 
     #Will Return the information from inside the token
-    def self.parse_token!(transaction)
+    def parse_token!(transaction)
       return JWT.decode transaction[:Tkn], nil, false
     end
 
     # Checking the authorisationa nd the protocols are allowed
-    def self.precheck(transaction, token, company)
+    def precheck(transaction, token, company)
       authN = get_protocol_auth_level(transaction[:Prot], company)
       return check_authorisation(token[0]["Signature"], transaction, company, authN)
     end
 
     # Will ensure that the protocol is authorised by the company
-    def self.get_protocol_auth_level(proto, company)
+    def get_protocol_auth_level(proto, company)
       begin 
         authN = company[:Protocols].find {|protocol| protocol[:Name] == proto}[:Privilege]
       rescue 
@@ -39,7 +38,7 @@ module Btxledger
     end
 
     # Will Check that the person posting the transaction has permission to do these things
-    def self.check_authorisation(signature, transaction, company, required_privilege)
+    def check_authorisation(signature, transaction, company, required_privilege)
       digest = OpenSSL::Digest::SHA256.new
       begin 
         author = company[:Authorised].find do |authN| 
@@ -55,7 +54,7 @@ module Btxledger
 
 
     #if all is good, go ahead and process the transaction into the books
-    def self.execute_transaction(transaction, company, author)
+    def execute_transaction(transaction, company, author)
       puts "Processing..."
       check_balances(transaction)
       check_date(transaction, company)
@@ -67,14 +66,14 @@ module Btxledger
     end
 
     #Make sure that all the amounts in the transaction balance to zero
-    def self.check_balances(transaction)
+    def check_balances(transaction)
       unless ( transaction[:Txn][:Postings].reduce(0) { |sum,x| sum +x[:Amt][:Value].to_i } == 0 )
         raise "Unbalanced Transaction"
       end
     end
 
     #Make sure that the transaction date is not before cutoff/balance date
-    def self.check_date(transaction, company)
+    def check_date(transaction, company)
       if [Date.parse(company[:Information][:Cutoff]), Date.parse(company[:Information][:Balance])].any? do |x| 
         x > Date.parse(transaction[:Txn][:Date]) 
       end
