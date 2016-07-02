@@ -9,26 +9,12 @@ require 'base64'
 require 'jwt'
 
 
-#post '/transaction' do
-  #content_type :json
-  #request.body.rewind
-  #transaction = JSON.parse(request.body.read, :symbolize_names => true)
-  ##transaction.to_json
-  #token_info = parse_token!(transaction)
-
-  #if ( author = precheck(transaction, token_info, company)) then
-    #execute_transaction(transaction, company, author)
-  #end
-
-  #binding.pry
-#end
-
 def read_file()
   file = File.read('genosis.json')
   company = JSON.parse(file, :symbolize_names => true)
   load_protocols(company)
 
-  txn_file = File.read('data/transaction.json')
+  txn_file = File.read('transaction.json')
   transaction = JSON.parse(txn_file, :symbolize_names => true)
 
   token_info = parse_token!(transaction)
@@ -111,4 +97,3 @@ def check_date(transaction, company)
   end
 end
 
-read_file()
