@@ -8,3 +8,4 @@ tools.rb signs transactions with the test keys
 
 TODO
 create the toolset for viewing TB and shit
+store data in a mongoDB, before making it work in ethereum

@@ -7,10 +7,13 @@ require 'openssl'
 require 'base64'
 require 'jwt'
 
+require './btxledger/mongo'
+
 module Btxledger
   class Ledger
 
     def initialize(company)
+      @company = company
       for protocol in company[:Protocols]
         require './protocols/' + protocol[:Name].downcase()
       end
@@ -61,7 +64,7 @@ module Btxledger
       #done by protocol
       eval(transaction[:Prot]).execute(company,transaction)
       transaction_details = {:Created => DateTime.now(), :Author => author[:Public_Key] }
-      company[:Transactions] << transaction.merge(transaction_details)
+      save_to_backend(transaction.merge(transaction_details))
       puts "Done."
     end
 
@@ -79,6 +82,19 @@ module Btxledger
       end
         raise "Pre Cutoff Date"
       end
+    end
+
+    #save the information to the backend
+    def save_to_backend(transaction)
+      uri = "mongodb://btxledger:password@ds011705.mlab.com:11705/btxledger"
+
+      mdb = MongoBackend.new(uri)
+      mdb.drop()
+
+      mdb.createNew(@company)
+      mdb.pushTransaction(transaction)
+
+      mdb.close()
     end
 
   end
