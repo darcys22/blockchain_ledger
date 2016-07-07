@@ -4,8 +4,10 @@ just run main.rb to get to the webserver running. post a transaction to localhos
 
 transaction examples in data
 
+in tools you can use Transactioner.new() to create a new file
+
 tools.rb signs transactions with the test keys
 
 TODO
 create the toolset for viewing TB and shit
-store data in a mongoDB, before making it work in ethereum
+Tools make a big file of transactions
