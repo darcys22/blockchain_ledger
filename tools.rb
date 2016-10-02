@@ -198,28 +198,26 @@ class Reporter
 
   end
 
-  def ledgerToCSV
-    opts.empty? ? ledger = self.GeneralLedger() : ledger = self.GeneralLedger(opts)
-    ledger.each do |k, v|
-      puts "Account: " + k.to_s
-      puts "Opening Balance: " + v[:OpeningBalance].to_s
-      puts "---------------------------------"
-      v[:Txns].each do |tx|
-        print tx[:Date].to_s
-        print "  "
-        print tx[:Memo].to_s
-        print "  "
-        print tx[:Amt].to_s
-        puts "  "
+  def TrialCSV(opts = {})
+    opts.empty? ? trialbal = self.TrialBalance() : trialbal = self.TrialBalance(opts)
+    file = "output.csv"
+    CSV.open( file, 'w' ) do |writer|
+      trialbal.each do |k, v|
+        writer << [k.to_s, v.to_s]
       end
-      puts "---------------------------------"
-      puts "Closing Balance: " + v[:ClosingBalance].to_s
-      puts "---------------------------------"
-      puts "---------------------------------"
     end
   end
 
-  def TrialCSV
+  def ledgerToCSV(opts = {})
+    opts.empty? ? ledger = self.GeneralLedger() : ledger = self.GeneralLedger(opts)
+    file = "output.csv"
+    CSV.open( file, 'w' ) do |writer|
+      ledger.each do |k, v|
+        v[:Txns].each do |tx|
+          writer << [k.to_s, v[:OpeningBalance].to_s, v[:ClosingBalance].to_s, tx[:Date].to_s, tx[:Memo].to_s, tx[:Amt].to_s]
+        end
+      end
+    end
   end
 
 end
@@ -230,7 +228,7 @@ def main()
   #file = './data/x.rb'
   #verifier = Verifier.new(file,{:file => true})
   x = Reporter.new()
-  x.printLedger()
+  x.TrialCSV()
 
   #txn_file = File.read('./data/transaction.json')
   #transaction = JSON.parse(txn_file, :symbolize_names => true)
