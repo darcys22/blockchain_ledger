@@ -11,8 +11,8 @@ tools.rb signs transactions with the test keys
 tools.rb also includes a reporter for TB and GL Listing
 
 TODO
-Make a separate protocol that works
-Tools make a big file of transactions
+Tools make a big file of transactions, test all the new things with bigger files. Make the current generator better and document it cause you keep forgetting
+Make a separate protocol that works (Employees?)
 download GL listing from QB Online and convert into this
 actually figure out how to save on blockchain
 
