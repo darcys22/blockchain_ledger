@@ -8,8 +8,11 @@ curl -v -X POST -d @./data/transaction.json localhost:4567/transaction --header 
 in tools you can use Transactioner.new() to create a new file (For a transaction)
 
 tools.rb signs transactions with the test keys
+tools.rb also includes a reporter for TB and GL Listing
 
 TODO
-create the toolset for viewing TB and shit
-  output GL Listing
+Make a separate protocol that works
 Tools make a big file of transactions
+download GL listing from QB Online and convert into this
+actually figure out how to save on blockchain
+
