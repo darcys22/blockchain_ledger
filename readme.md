@@ -11,7 +11,5 @@ tools.rb signs transactions with the test keys
 
 TODO
 create the toolset for viewing TB and shit
-  read in information from file
-  refine TB to do at a certain date
   output GL Listing
 Tools make a big file of transactions

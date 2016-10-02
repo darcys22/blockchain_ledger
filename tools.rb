@@ -8,6 +8,7 @@ require 'openssl'
 require 'base64'
 require 'jwt'
 require 'httparty'
+require 'chronic'
 require 'mongo'
 
 class Verifier
@@ -46,6 +47,7 @@ class Verifier
 end
 
 class Transactioner
+  #Creates Transaction JSON Journals that can be submitted to the webserver
   def initialize
     repeat = true
     @transactions = []
@@ -100,9 +102,10 @@ class Reporter
   #this obtains teh data from somerhwer and then can output a TB or GL Listing
   def initialize(location = "mongodb://btxledger:password@ds011705.mlab.com:11705/btxledger", options = {:file => false})
     if options[:file]
-      #TODO: Read in from file, populat @transactions & @company
       file = File.read(location)
-      company = JSON.parse(file, :symbolize_names => true)
+      @company = JSON.parse(file, :symbolize_names => true)
+      @transactions = @company[:Transactions]
+      @company.delete(:Transactions)
     else
       client = Mongo::Client.new(location)
       company = client[:ledger]
@@ -128,19 +131,49 @@ class Reporter
     File.open(location,"w"){|f| f.write(combined.to_json)}
   end
 
-  def GeneralLedger(opts = {})
-    return 0
-  end
-
-  def TrialBalance(opts = {})
-    @accounts = {}
-    @transactions.each do |doc|
-      doc[:Txn][:Postings].each do |line|
-        @accounts[line[:Account].to_sym] ||= 0
-        @accounts[line[:Account].to_sym] += line[:Amt][:Value].to_i
+  def GeneralLedger(opts = {:Accounts => [], :OpeningDate => "2010-1-1", :ClosingDate => Date.today.to_s})
+    tbOpening = self.TrialBalance({:BalanceDate => opts[:OpeningDate]})
+    tbClosing = self.TrialBalance({:BalanceDate => opts[:ClosingDate]})
+    openingDate = Chronic.parse(opts[:OpeningDate])
+    closingDate = Chronic.parse(opts[:ClosingDate])
+    glListing = {}
+    tbClosing.each do |k, v|
+      if (opts[:Accounts].empty? || opts[:Accounts].include?(k))
+        glListing[k] ||= {}
+        glListing[k][:ClosingBalance] = v
+        glListing[k][:OpeningBalance] = tbOpening[k] || 0
       end
     end
-    puts @accounts
+    @transactions.each do |doc|
+      date = Chronic.parse(doc[:Txn][:Date])
+      if (date.between?(openingDate, closingDate))
+        doc[:Txn][:Postings].each do |line|
+          if (opts[:Accounts].empty? || opts[:Accounts].include?(line[:Account]))
+            glListing[line[:Account].to_sym][:Txns] ||= []
+            glListing[line[:Account].to_sym][:Txns].push({
+              :Date => date.strftime("%F"),
+              :Memo => doc[:Txn][:Payee],
+              :Amt  => line[:Amt][:Value]
+            })
+          end
+        end
+      end
+    end
+    binding.pry
+    return glListing
+  end
+
+  def TrialBalance(opts = {:BalanceDate => Date.today.to_s})
+    accounts = {}
+    @transactions.each do |doc|
+      if (Chronic.parse(doc[:Txn][:Date], :context => :past) <= Chronic.parse(opts[:BalanceDate], :context => :past))
+        doc[:Txn][:Postings].each do |line|
+          accounts[line[:Account].to_sym] ||= 0
+          accounts[line[:Account].to_sym] += line[:Amt][:Value].to_i
+        end
+      end
+    end
+    return accounts
   end
 
 end
@@ -150,9 +183,8 @@ def main()
   #file = './data/transaction.json'
   #file = './data/x.rb'
   #verifier = Verifier.new(file,{:file => true})
-  binding.pry
   x = Reporter.new()
-  x.TrialBalance()
+  x.GeneralLedger()
 
   #txn_file = File.read('./data/transaction.json')
   #transaction = JSON.parse(txn_file, :symbolize_names => true)
