@@ -3,6 +3,7 @@
 require 'json'
 require 'pry'
 require 'date'
+require 'csv'
 
 require 'openssl'
 require 'base64'
@@ -159,7 +160,6 @@ class Reporter
         end
       end
     end
-    binding.pry
     return glListing
   end
 
@@ -176,6 +176,52 @@ class Reporter
     return accounts
   end
 
+  def printLedger(opts = {})
+    opts.empty? ? ledger = self.GeneralLedger() : ledger = self.GeneralLedger(opts)
+    ledger.each do |k, v|
+      puts "Account: " + k.to_s
+      puts "Opening Balance: " + v[:OpeningBalance].to_s
+      puts "---------------------------------"
+      v[:Txns].each do |tx|
+        print tx[:Date].to_s
+        print "  "
+        print tx[:Memo].to_s
+        print "  "
+        print tx[:Amt].to_s
+        puts "  "
+      end
+      puts "---------------------------------"
+      puts "Closing Balance: " + v[:ClosingBalance].to_s
+      puts "---------------------------------"
+      puts "---------------------------------"
+    end
+
+  end
+
+  def ledgerToCSV
+    opts.empty? ? ledger = self.GeneralLedger() : ledger = self.GeneralLedger(opts)
+    ledger.each do |k, v|
+      puts "Account: " + k.to_s
+      puts "Opening Balance: " + v[:OpeningBalance].to_s
+      puts "---------------------------------"
+      v[:Txns].each do |tx|
+        print tx[:Date].to_s
+        print "  "
+        print tx[:Memo].to_s
+        print "  "
+        print tx[:Amt].to_s
+        puts "  "
+      end
+      puts "---------------------------------"
+      puts "Closing Balance: " + v[:ClosingBalance].to_s
+      puts "---------------------------------"
+      puts "---------------------------------"
+    end
+  end
+
+  def TrialCSV
+  end
+
 end
 
 def main()
@@ -184,7 +230,7 @@ def main()
   #file = './data/x.rb'
   #verifier = Verifier.new(file,{:file => true})
   x = Reporter.new()
-  x.GeneralLedger()
+  x.printLedger()
 
   #txn_file = File.read('./data/transaction.json')
   #transaction = JSON.parse(txn_file, :symbolize_names => true)
