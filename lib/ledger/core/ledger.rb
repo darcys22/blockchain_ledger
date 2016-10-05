@@ -7,9 +7,7 @@ require 'openssl'
 require 'base64'
 require 'jwt'
 
-require './btxledger/mongo'
-
-module Btxledger
+module Ledger
   class Ledger
 
     def initialize(company)

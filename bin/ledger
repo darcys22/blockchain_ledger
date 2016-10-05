@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.unshift(File.dirname(File.realpath(__FILE__)) + '/../lib')
+
+require 'ledger'
+
+cli = Ledger::CLI.new
+result = 0
+
+result = cli.run
+
+exit result
