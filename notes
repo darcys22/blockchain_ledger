@@ -1,3 +1,5 @@
-https://github.com/howeyc/ledger/blob/master/types.go
-https://bitbucket.org/blais/beancount/src/3e6bffde6e752ab3f4c676dd0502d92dfd37afaf/src/python/beancount/core/?at=default
-https://docs.google.com/document/d/1WjARst_cSxNE-Lq6JnJ5CC41T3WndEsiMw4d46r2694/edit#heading=h.x7talymj3gar
+#use this for style of modules and classes and shit
+https://github.com/bbatsov/rubocop
+
+#use this for command line
+https://github.com/JEG2/highline
