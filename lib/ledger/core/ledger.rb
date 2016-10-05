@@ -13,7 +13,7 @@ module Ledger
     def initialize(company)
       @company = company
       for protocol in company[:Protocols]
-        require './protocols/' + protocol[:Name].downcase()
+        require '../protocols/' + protocol[:Name].downcase()
       end
     end
 
@@ -86,7 +86,7 @@ module Ledger
     def save_to_backend(transaction)
       uri = "mongodb://btxledger:password@ds011705.mlab.com:11705/btxledger"
 
-      mdb = MongoBackend.new(uri)
+      mdb = Storage::MongoBackend.new(uri)
       mdb.drop()
 
       mdb.createNew(@company)
