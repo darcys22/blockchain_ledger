@@ -7,15 +7,13 @@ module Ledger
 
     def initialize
       @cli = HighLine.new
-      @options = {}
-      #TODO get configstore working
-      #@config_store = ConfigStore.new
     end
 
     def run(args = ARGV)
       @cli.choose do |menu|
         menu.prompt = "Please choose from the following:"
         menu.choice(:Webserver) { Webserver.run! }
+        #menu.choice(:Test) {::Ledger.load_default_file() binding.pry}
         menu.choice(:Reporter) { 
           x = Tools::Reporter.new()
           @cli.choose do |menu2|
@@ -25,6 +23,7 @@ module Ledger
           end
         }
         menu.default = :Webserver
+        #menu.default = :Test
       end
       return 0
     end

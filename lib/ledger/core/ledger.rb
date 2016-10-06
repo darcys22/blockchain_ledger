@@ -84,7 +84,7 @@ module Ledger
 
     #save the information to the backend
     def save_to_backend(transaction)
-      uri = "mongodb://btxledger:password@ds011705.mlab.com:11705/btxledger"
+      uri = ::Ledger.config[:mongo_uri]
 
       mdb = Storage::MongoBackend.new(uri)
       mdb.drop()

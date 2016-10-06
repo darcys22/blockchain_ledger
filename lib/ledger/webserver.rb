@@ -6,10 +6,12 @@ require 'sinatra/base'
 module Ledger
   class Webserver < Sinatra::Base
 
-    file = File.read('../genosis.json')
-    company = JSON.parse(file, :symbolize_names => true)
+    def self.get_company_file()
+      file = File.read('../genosis.json')
+      return JSON.parse(file, :symbolize_names => true)
+    end
 
-    ledger = Ledger.new(company)
+    ledger = Ledger.new(get_company_file())
 
     post '/transaction' do
       content_type :json
