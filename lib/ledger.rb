@@ -1,7 +1,7 @@
 require "ledger/version"
+require "ledger/config"
 require "ledger/core"
 require "ledger/storage"
 require "ledger/tools"
 require "ledger/cli"
 require "ledger/webserver"
-require "ledger/config"

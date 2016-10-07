@@ -10,10 +10,22 @@ require 'jwt'
 module Ledger
   class Ledger
 
-    def initialize(company)
-      @company = company
-      for protocol in company[:Protocols]
+    def initialize()
+      ::Ledger.initialise_config()
+      @config = ::Ledger.config
+      @storage = Storage.const_get(@config[:company].capitalize()).new(@config[:company_loc])
+      @company = @storage.getCompany()
+      for protocol in @company[:Protocols]
         require '../protocols/' + protocol[:Name].downcase()
+      end
+    end
+
+    def parse_transactions(transactions)
+      for transaction in transactions
+        token_info = parse_token!(transaction)
+        if ( author = precheck(transaction, token_info, @company)) then
+          execute_transaction(transaction, @company, author)
+        end
       end
     end
 
@@ -84,15 +96,7 @@ module Ledger
 
     #save the information to the backend
     def save_to_backend(transaction)
-      uri = ::Ledger.config[:mongo_uri]
-
-      mdb = Storage::MongoBackend.new(uri)
-      mdb.drop()
-
-      mdb.createNew(@company)
-      mdb.pushTransaction(transaction)
-
-      mdb.close()
+      @storage.pushTransaction(transaction)
     end
 
   end

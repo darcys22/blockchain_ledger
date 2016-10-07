@@ -112,6 +112,16 @@ module Ledger
         end
 
       end
+      
+      def printTB(opts = {})
+        opts.empty? ? tb = self.TrialBalance() : tb = self.TrialBalance(opts)
+        puts "---------------------------------"
+        tb.each do |k, v|
+          puts k.to_s + ": " + v.to_s
+          puts "---------------------------------"
+        end
+
+      end
 
       def TrialCSV(opts = {})
         opts.empty? ? trialbal = self.TrialBalance() : trialbal = self.TrialBalance(opts)
