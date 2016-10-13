@@ -60,6 +60,10 @@ module Ledger
         return lines
       end
 
+      def writeDefault()
+        File.open("../data/"+ @transactions[0]["Txn"]["Desc"],"w"){|f| f.write(@transactions.to_json)}
+      end
+
       def write(location)
         File.open(location,"w"){|f| f.write(@transactions.to_json)}
       end

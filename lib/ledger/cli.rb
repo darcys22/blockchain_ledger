@@ -31,12 +31,12 @@ module Ledger
     end
 
     def transacter()
-      x = Tools::Transactioner.new()
-      @cli.choose do |menu2|
-        menu2.prompt = "Please choose from the following:"
-        menu2.choice(:TB) { x.printTB() }
-        menu2.choice(:Ledger) { x.printLedger() }
-      end
+      x = Tools::Transactioner.new().writeDefault()
+      #@cli.choose do |menu2|
+        #menu2.prompt = "Please choose from the following:"
+        #menu2.choice(:TB) { x.printTB() }
+        #menu2.choice(:Ledger) { x.printLedger() }
+      #end
     end
 
   end

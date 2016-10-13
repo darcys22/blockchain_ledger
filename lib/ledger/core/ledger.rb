@@ -20,6 +20,18 @@ module Ledger
       end
     end
 
+    def getCompany()
+      return @company
+    end
+
+    def getPrivateKey()
+      return @config[:private_key]
+    end
+
+    def getPublicKey()
+      return @config[:public_key]
+    end
+
     def parse_transactions(transactions)
       for transaction in transactions
         token_info = parse_token!(transaction)
