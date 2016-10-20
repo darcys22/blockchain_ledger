@@ -1,15 +1,3 @@
-#require 'json'
-#require 'pry'
-#require 'date'
-#require 'csv'
-
-#require 'openssl'
-#require 'base64'
-#require 'jwt'
-#require 'httparty'
-#require 'chronic'
-#require 'mongo'
-
 module Ledger
   module Tools
     class Verifier
@@ -21,12 +9,26 @@ module Ledger
         @public_key = @ledger.getPublicKey()
       end
 
-      def sign()
-        @transaction.delete(:Tkn)
+      def sign(x)
+        x.delete(:Tkn)
         digest = OpenSSL::Digest::SHA256.new
-        @signature = @private_key.sign digest, @transaction.to_json
+        @signature = @private_key.sign digest, x.to_json
         @tkn = JWT.encode({:Signature => Base64.encode64(@signature), :Date => Date.today}, nil, 'none')
-        @transaction.merge!({:Tkn => @tkn})
+        x.merge!({:Tkn => @tkn})
+        return x
+      end
+
+      def signMultiple()
+        multiple = []
+        @transaction.each do |x|
+          x.delete(:Tkn)
+          digest = OpenSSL::Digest::SHA256.new
+          @signature = @private_key.sign digest, x.to_json
+          @tkn = JWT.encode({:Signature => Base64.encode64(@signature), :Date => Date.today}, nil, 'none')
+          x[:Tkn] = @tkn
+          multiple << x
+        end
+        @transaction = multiple
         return @transaction
       end
 

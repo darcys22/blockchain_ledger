@@ -21,7 +21,7 @@ module Ledger
         @transactions = []
         while repeat do
           puts "Date:"
-          date = Date.parse gets.strip
+          date = Chronic.parse(gets.strip, :context => :past)
           puts "Desc:"
           desc = gets.strip
           lineItems = getLines()
@@ -61,7 +61,7 @@ module Ledger
       end
 
       def writeDefault()
-        File.open("../data/"+ @transactions[0]["Txn"]["Desc"],"w"){|f| f.write(@transactions.to_json)}
+        File.open("./data/"+ @transactions[0]["Txn"]["Desc"].gsub(/\s+/,"") + ".json","w"){|f| f.write(@transactions.to_json)}
       end
 
       def write(location)

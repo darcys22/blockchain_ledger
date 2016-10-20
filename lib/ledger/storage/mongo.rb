@@ -5,6 +5,7 @@ module Ledger
     class Mongo
       def initialize(uri)
         @uri = uri
+        ::Mongo::Logger.logger.level = ::Logger::FATAL
         @client = client = ::Mongo::Client.new(uri)
         @company = client[:ledger]
         @transactions = client[:transactions]
@@ -21,6 +22,16 @@ module Ledger
         end
 
         return company_file
+      end
+
+      def getTransactions(startDate,endDate)
+        cursor = @transactions.find()
+        @transactions = []
+        cursor.each do |doc|
+          @transactions.push(doc)
+        end
+
+        return @transactions
       end
 
       def pushTransaction(transaction)

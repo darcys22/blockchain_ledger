@@ -1,45 +1,26 @@
 #!/usr/bin/env ruby
 
-require 'json'
-require 'pry'
-require 'date'
-require 'csv'
+#require 'json'
+#require 'pry'
+#require 'date'
+#require 'csv'
 
-require 'openssl'
-require 'base64'
-require 'jwt'
-require 'httparty'
-require 'chronic'
-require 'mongo'
+#require 'openssl'
+#require 'base64'
+#require 'jwt'
+#require 'httparty'
+#require 'chronic'
+#require 'mongo'
 
 module Ledger
   module Tools
     class Reporter
       #this obtains teh data from somerhwer and then can output a TB or GL Listing
-      def initialize(location = "mongodb://btxledger:password@ds011705.mlab.com:11705/btxledger", options = {:file => false})
-        if options[:file]
-          file = File.read(location)
-          @company = JSON.parse(file, :symbolize_names => true)
-          @transactions = @company[:Transactions]
-          @company.delete(:Transactions)
-        else
-          client = Mongo::Client.new(location)
-          company = client[:ledger]
-          transactions = client[:transactions]
-          @transactions = []
-
-          cursor = company.find
-          cursor.each do |doc|
-            @company = doc
-          end
-
-          cursor = transactions.find
-          cursor.each do |doc|
-            @transactions.push(doc)
-          end
-
-          client.close()
-        end
+      def initialize()
+        ::Ledger.initialise_config()
+        @ledger = Ledger.new
+        @company = @ledger.getCompany()
+        @transactions = @ledger.getTransactions()
       end
 
       def SaveToFile(location = "OutputCompany.dat")
@@ -84,7 +65,7 @@ module Ledger
           if (Chronic.parse(doc[:Txn][:Date], :context => :past) <= Chronic.parse(opts[:BalanceDate], :context => :past))
             doc[:Txn][:Postings].each do |line|
               accounts[line[:Account].to_sym] ||= 0
-              accounts[line[:Account].to_sym] += line[:Amt][:Value].to_i
+              accounts[line[:Account].to_sym] += line[:Amt][:Value].to_f
             end
           end
         end

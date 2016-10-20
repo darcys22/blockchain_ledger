@@ -11,8 +11,8 @@ curl -v -X POST -d @./data/transaction.json localhost:4567/transaction --header 
 
 
 TODO
-Tools make a big file of transactions, test all the new things with bigger files. Make the current generator better and document it cause you keep forgetting
+make the core.yaml file complete and update shit
 Make a separate protocol that works (Employees?)
-download GL listing from QB Online and convert into this
+Make the TBimporter more general
 actually figure out how to save on blockchain
 

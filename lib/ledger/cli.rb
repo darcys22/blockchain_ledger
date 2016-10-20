@@ -15,8 +15,8 @@ module Ledger
         menu.choice(:Webserver) { Webserver.run!() }
         menu.choice(:Reporter) { reporter() }
         menu.choice(:New_Transaction) { transacter()}
+        menu.choice(:Import_Transaction) { importer(@cli.ask("Location: "))}
         menu.default = :Webserver
-        #menu.default = :Test
       end
       return 0
     end
@@ -30,13 +30,16 @@ module Ledger
       end
     end
 
+    def importer(location)
+      file = File.read(location)
+      data = JSON.parse(file, {:symbolize_names => true})
+      x = Tools::Verifier.new(data)
+      x.signMultiple()
+      x.write(location + "_signed")
+    end
+
     def transacter()
       x = Tools::Transactioner.new().writeDefault()
-      #@cli.choose do |menu2|
-        #menu2.prompt = "Please choose from the following:"
-        #menu2.choice(:TB) { x.printTB() }
-        #menu2.choice(:Ledger) { x.printLedger() }
-      #end
     end
 
   end

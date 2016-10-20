@@ -16,12 +16,15 @@ module Ledger
       @storage = Storage.const_get(@config[:company].capitalize()).new(@config[:company_loc])
       @company = @storage.getCompany()
       for protocol in @company[:Protocols]
-        require '../protocols/' + protocol[:Name].downcase()
+        require './protocols/' + protocol[:Name].downcase()
       end
     end
 
     def getCompany()
       return @company
+    end
+    def getTransactions(startDate = Date.parse("Jan 1 1900"), endDate = Date.today())
+      return @storage.getTransactions(startDate,endDate)
     end
 
     def getPrivateKey()

@@ -1,0 +1,15 @@
+###############################################################################
+#
+#    Config Directory and File
+#
+###############################################################################
+config:
+  dir:
+  file:
+:config_dir => Dir.home() + "/.ledger",
+:config_file => Dir.home() + "/.ledger/config",
+:keys_loc => Dir.home() + "/.ledger/keys",
+:public_key_loc => Dir.home() + "/.ledger/keys/test-public_key.pem",
+:private_key_loc => Dir.home() + "/.ledger/keys/test-private_key.pem",
+:company => "file",
+:company_loc => "../data/company.json"
