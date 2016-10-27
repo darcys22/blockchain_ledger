@@ -11,6 +11,7 @@ curl -v -X POST -d @./data/transaction.json localhost:4567/transaction --header 
 
 
 TODO
+create a tool that create a company from scratch
 make the gemfile and basic info 
 make the core.yaml file complete and update shit
 read the protocol from the company file and make it accept external locations

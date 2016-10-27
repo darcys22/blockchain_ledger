@@ -1,16 +1,14 @@
-#!/usr/bin/env ruby
+#require 'json'
+#require 'pry'
+#require 'date'
+#require 'csv'
 
-require 'json'
-require 'pry'
-require 'date'
-require 'csv'
-
-require 'openssl'
-require 'base64'
-require 'jwt'
-require 'httparty'
-require 'chronic'
-require 'mongo'
+#require 'openssl'
+#require 'base64'
+#require 'jwt'
+#require 'httparty'
+#require 'chronic'
+#require 'mongo'
 
 module Ledger
   module Tools
