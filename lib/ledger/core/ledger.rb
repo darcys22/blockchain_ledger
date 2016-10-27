@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'json'
+require 'json-schema'
 require 'pry'
 require 'date'
 require 'openssl'
@@ -15,14 +16,12 @@ module Ledger
       @config = ::Ledger.config
       @storage = Storage.const_get(@config[:company].capitalize()).new(@config[:company_loc])
       @company = @storage.getCompany()
-      for protocol in @company[:Protocols]
-        require './protocols/' + protocol[:Name].downcase()
-      end
     end
 
     def getCompany()
       return @company
     end
+
     def getTransactions(startDate = Date.parse("Jan 1 1900"), endDate = Date.today())
       return @storage.getTransactions(startDate,endDate)
     end
@@ -80,14 +79,20 @@ module Ledger
       return author
     end
 
+    def validate_protocol(transaction)
+      location = './protocols/' + transaction[:Prot].downcase() + '.rb'
+      errors = JSON::Validator.fully_validate(location, transaction)
+      raise errors[0] unless errors.empty?
+      return errors
+    end
+
 
     #if all is good, go ahead and process the transaction into the books
     def execute_transaction(transaction, company, author)
       puts "Processing..."
       check_balances(transaction)
       check_date(transaction, company)
-      #done by protocol
-      eval(transaction[:Prot]).execute(company,transaction)
+      validate_protocol(transaction)
       transaction_details = {:Created => DateTime.now(), :Author => author[:Public_Key] }
       save_to_backend(transaction.merge(transaction_details))
       puts "Done."

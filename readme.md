@@ -11,8 +11,10 @@ curl -v -X POST -d @./data/transaction.json localhost:4567/transaction --header 
 
 
 TODO
+make the gemfile and basic info 
 make the core.yaml file complete and update shit
-Make a separate protocol that works (Employees?)
-Make the TBimporter more general
+read the protocol from the company file and make it accept external locations
+create the full payrun protocol
+Make the TBimporter program more general
 actually figure out how to save on blockchain
 

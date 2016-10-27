@@ -1,5 +1,6 @@
-module Journal
-  def self.execute(company, transaction)
-    puts "Protocol: ledger"
-  end
-end
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Journal",
+    "description": "Accepts all Journals enforcing nothing",
+    "type": "object"
+}
