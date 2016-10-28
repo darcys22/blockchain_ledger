@@ -7,6 +7,7 @@ require 'date'
 require 'openssl'
 require 'base64'
 require 'jwt'
+require 'net/http'
 
 module Ledger
   class Ledger
@@ -80,8 +81,10 @@ module Ledger
     end
 
     def validate_protocol(transaction)
-      location = './protocols/' + transaction[:Prot].downcase() + '.rb'
-      errors = JSON::Validator.fully_validate(location, transaction)
+      uri = @company[:Protocols].find {|protocol| protocol[:Name] == transaction[:Prot]}[:Address]
+      resp = Net::HTTP.get_response(URI.parse(uri))
+      schema = JSON.parse(resp.body)
+      errors = JSON::Validator.fully_validate(schema, transaction)
       raise errors[0] unless errors.empty?
       return errors
     end
