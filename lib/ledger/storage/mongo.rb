@@ -10,6 +10,7 @@ module Ledger
         @company = client[:ledger]
         @transactions = client[:transactions]
       end
+
       def createNew(genosis)
         @company.insert_one(genosis)
       end

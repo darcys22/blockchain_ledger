@@ -16,6 +16,7 @@ module Ledger
         menu.choice(:Reporter) { reporter() }
         menu.choice(:New_Transaction) { transacter()}
         menu.choice(:Import_Transaction) { importer(@cli.ask("Location: "))}
+        menu.choice(:New_Company) { creator(@cli.ask("Location: "))}
         menu.choice(:Exit) {}
         menu.default = :Webserver
       end
@@ -39,6 +40,12 @@ module Ledger
       x.write(location + "_signed")
     end
 
+    def creator(location)
+      file = File.read(location)
+      data = JSON.parse(file, {:symbolize_names => true})
+      x = Tools::Creator.new().addCompany(data)
+    end
+    
     def transacter()
       x = Tools::Transactioner.new().writeDefault()
     end
