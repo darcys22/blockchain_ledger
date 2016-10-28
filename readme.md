@@ -11,10 +11,9 @@ curl -v -X POST -d @./data/transaction.json localhost:4567/transaction --header 
 
 
 TODO
-create a tool that create a company from scratch
+create a tool that create a company from scratch with prompts
 make the gemfile and basic info 
 make the core.yaml file complete and update shit
-read the protocol from the company file and make it accept external locations
 create the full payrun protocol
 Make the TBimporter program more general
 actually figure out how to save on blockchain

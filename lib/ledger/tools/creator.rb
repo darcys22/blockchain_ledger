@@ -23,8 +23,15 @@ module Ledger
         saveToStorage()
       end
 
-      def walkthrough(opts = {})
-        puts "Get info from them make company"
+      def walkthrough()
+        puts "Company Name:"
+        name = gets.strip
+        puts "Date:"
+        date = Chronic.parse(gets.strip, :context => :past)
+        puts "Roles:"
+        roles = gets..gsub(/\s+/m, ' ').strip.split(" ")
+        #TODO Protocols
+        #company = {"Information"=> {"Name" => name, "Cutoff" => date, "Balance"=> date},{"Desc" => desc, "Date"=>date, "Postings"=>lineItems}}
       end
       
     end
