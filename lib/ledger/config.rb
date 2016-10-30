@@ -3,24 +3,21 @@ require 'openssl'
 require 'pry'
 
 module Ledger
-  default_config = "lib/ledger/core/core.yaml"
-  @config = Hash[YAML::load(IO.read(default_config)).map{|(k,v)| [k.to_sym,v]}]
-  #@config = {
-    #:config_dir => Dir.home() + "/.ledger",
-    #:config_file => Dir.home() + "/.ledger/config",
-    #:keys_loc => Dir.home() + "/.ledger/keys",
-    #:public_key_loc => Dir.home() + "/.ledger/keys/test-public_key.pem",
-    #:private_key_loc => Dir.home() + "/.ledger/keys/test-private_key.pem",
-    #:company => "file",
-    #:company_loc => "../data/company.json"
-  #}
+  @config = {
+    :config_dir => Dir.home() + "/.ledger",
+    :config_file => Dir.home() + "/.ledger/config",
+    :keys_loc => Dir.home() + "/.ledger/keys",
+    :public_key_loc => Dir.home() + "/.ledger/keys/test-public_key.pem",
+    :private_key_loc => Dir.home() + "/.ledger/keys/test-private_key.pem",
+    :company => "file",
+    :company_loc => "../data/company.json"
+  }
 
   def self.configure(opts = {})
     opts.each {|k,v| @config[k.to_sym] = v}
   end
 
   def self.load_keys()
-    binding.pry
     @config[:public_key] = OpenSSL::PKey::RSA.new File.read @config[:public_key_loc]
     @config[:private_key] = OpenSSL::PKey::RSA.new File.read @config[:private_key_loc]
   end
