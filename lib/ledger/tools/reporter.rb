@@ -9,7 +9,7 @@
 #require 'base64'
 #require 'jwt'
 #require 'httparty'
-#require 'chronic'
+require 'chronic'
 #require 'mongo'
 
 module Ledger
