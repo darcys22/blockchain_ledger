@@ -15,7 +15,7 @@ module Ledger
         menu.choice(:Webserver) { Webserver.run!() }
         menu.choice(:Reporter) { reporter() }
         menu.choice(:New_Transaction) { transacter()}
-        menu.choice(:Import_Transaction) { importer(@cli.ask("Location: "))}
+        menu.choice(:Verify_Transaction) { importer(@cli.ask("Location: "))}
         menu.choice(:New_Company) { creator(@cli.ask("Location: "))}
         menu.choice(:Exit) {}
         menu.default = :Webserver

@@ -13,7 +13,9 @@ curl -v -X POST -d @./data/transaction.json localhost:4567/transaction --header 
 TODO
 create a tool that create a company from scratch with prompts
 graceful fail if there is no public key in the .ledger file
-create the full payrun protocol
+create the full fastpace currency trading protocol
 Make the TBimporter program more general
 actually figure out how to save on blockchain
+
+
 
