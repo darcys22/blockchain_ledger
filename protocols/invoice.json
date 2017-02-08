@@ -1,0 +1,34 @@
+{
+  "type": "object",
+  "properties": {
+    "Payee": {
+      "title": "Payee",
+      "type": "number"
+    },
+    "InvoiceDate": {
+      "title": "Invoice Date",
+      "type": "string",
+      "format": "date"
+    },
+    "fixedItemsList": {
+      "type": "array",
+      "title": "Line Items",
+      "items": [
+        {
+          "title": "Description",
+          "type": "string",
+          "default": "lorem ipsum"
+        },
+        {
+          "title": "Account",
+          "type": "string",
+          "default": "lorem ipsum"
+        },
+        {
+          "title": "value",
+          "type": "number"
+        }
+      ]
+    }
+  }
+}
